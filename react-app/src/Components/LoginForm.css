@@ -4,7 +4,7 @@
     box-shadow: 0 0 10px rgba(0 , 0 , 0, .2);
     border: 2px solid rgba(0 , 0 , 0, .2);
     width: 400px;
-
+    
     border: 1px solid rgba(255, 255, 255, .2);
     padding: 30px 40px;
     padding-bottom: 50px;
@@ -23,22 +23,22 @@
 .input-box input{
     width: 98.5%;
     height: 100%;
-    border: 2px solid rgba(255, 255, 255, .2);
+    border: 2px solid rgba(0, 0, 0, 0.2);
     background : transparent;
     border-radius: 40px;
     outline: none;
     padding-left: 1rem;  
     padding-right: 3rem; 
-    color: #fff;
+    color: #000000;
     font-size: 17px;
 }
 
 .wrapper h1{
-    color: #fff;
+    color: #000000;
 }
 
 .input-box ::placeholder{
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 .input-box .icon{
@@ -46,7 +46,7 @@
     top: 20px;
     right: 35px;
     cursor: pointer;
-    color: #fff;
+    color: #000000;
 }
 
 

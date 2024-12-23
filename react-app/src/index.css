@@ -4,17 +4,15 @@
 
 
 
-body {
+body {  
   margin: 0;
-  display: flex;
-  
-  min-width: 320px;
-  min-height: 100vh;
+  /* min-width: 320px;
+  min-height: 100vh; */
   font-family: "Roboto", serif;
   padding: 0;
   box-sizing: border-box;
-  background-color: #141111;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url('./assets/bg2.jpg') ;
+  /* background-color: #141111; */
+  /* background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url('./assets/bg2.jpg') ; */
   background-size: cover;
   background-position: center;
 
