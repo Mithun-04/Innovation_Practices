@@ -8,15 +8,16 @@ const App = () => {
     <div>
       <NavBar />
       <div className='mid'>
-        <div className='para_div'>
+        <div className='para_div roboto-medium' >
           <p>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolores repellat quis eum doloribus ducimus cumque quam id, quas, vel voluptatibus praesentium aliquam laborum repellendus sint, odit harum iusto placeat. Inventore.
           </p>
         </div>
-      <LoginForm />
+      <LoginForm className="login"/>
       </div>
     </div>
   )
 }
 
 export default App
+

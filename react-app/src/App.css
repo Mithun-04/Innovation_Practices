@@ -3,6 +3,8 @@
   flex-direction: row;
   padding: 4rem ;
   justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
 }
 
 .mid p{
@@ -10,8 +12,54 @@
   
 }
 
+.roboto-medium {
+  font-family: "Roboto", serif;
+  font-weight: 400;
+  font-style: normal;
+  
+}
+
 .mid .para_div{
   width: 50%;
+  animation: slideinTop 1s ease-in 0s 1 forwards;
+  align-self: baseline;
+  flex-grow: 1;
+  font-size: 30px;
+  
 }
+
+.mid .wrapper{
+  opacity: 0;
+  animation: slideinLeft 1s ease-in .8s 1 forwards;
+}
+
+
+@keyframes slideinTop{
+  0%{
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  100%{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideinLeft{
+  0%{
+    transform: translateX(40px);
+    opacity: 0;
+  }
+  100%{
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
+
+
+
+
 
 
