@@ -1,5 +1,6 @@
 .mid{
   display: flex;
+  align-self: center;
   flex-direction: row;
   padding: 4rem ;
   justify-content: space-between;
@@ -29,6 +30,7 @@
 }
 
 .mid .wrapper{
+  align-self: center;
   opacity: 0;
   animation: slideinLeft 1s ease-in .8s 1 forwards;
 }

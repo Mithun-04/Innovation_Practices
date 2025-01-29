@@ -1,0 +1,13 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/royo/ip/Innovation_Practices/react-app/src/Components/output/main'
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _display, symObjAddr: 0x0, symBinAddr: 0x100003120, symSize: 0x118 }
+  - { offsetInCU: 0x4D, offset: 0x4D, size: 0x8, addend: 0x0, symName: _list, symBinAddr: 0x100008004, symSize: 0x0 }
+  - { offsetInCU: 0x75, offset: 0x75, size: 0x8, addend: 0x0, symName: _n, symBinAddr: 0x100008054, symSize: 0x0 }
+  - { offsetInCU: 0x8A, offset: 0x8A, size: 0x8, addend: 0x0, symName: _cdr, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x93, offset: 0x93, size: 0x8, addend: 0x0, symName: _display, symObjAddr: 0x0, symBinAddr: 0x100003120, symSize: 0x118 }
+  - { offsetInCU: 0xB7, offset: 0xB7, size: 0x8, addend: 0x0, symName: _ring, symObjAddr: 0x118, symBinAddr: 0x100003238, symSize: 0x510 }
+  - { offsetInCU: 0x163, offset: 0x163, size: 0x8, addend: 0x0, symName: _bully, symObjAddr: 0x638, symBinAddr: 0x100003758, symSize: 0x440 }
+  - { offsetInCU: 0x1DB, offset: 0x1DB, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0xA88, symBinAddr: 0x100003BA8, symSize: 0x194 }
+...

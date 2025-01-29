@@ -1,0 +1,11 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/royo/ip/Innovation_Practices/react-app/src/output/deadlock'
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _is_cyclic_util, symObjAddr: 0x0, symBinAddr: 0x100003940, symSize: 0x178 }
+  - { offsetInCU: 0x41, offset: 0x41, size: 0x8, addend: 0x0, symName: _is_cyclic_util, symObjAddr: 0x0, symBinAddr: 0x100003940, symSize: 0x178 }
+  - { offsetInCU: 0xBD, offset: 0xBD, size: 0x8, addend: 0x0, symName: _detect_cycle, symObjAddr: 0x178, symBinAddr: 0x100003AB8, symSize: 0xF0 }
+  - { offsetInCU: 0x12B, offset: 0x12B, size: 0x8, addend: 0x0, symName: _add_dependency, symObjAddr: 0x268, symBinAddr: 0x100003BA8, symSize: 0xAC }
+  - { offsetInCU: 0x16B, offset: 0x16B, size: 0x8, addend: 0x0, symName: _distributed_deadlock_detection, symObjAddr: 0x314, symBinAddr: 0x100003C54, symSize: 0x184 }
+  - { offsetInCU: 0x20D, offset: 0x20D, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x498, symBinAddr: 0x100003DD8, symSize: 0x12C }
+...

@@ -1,4 +1,4 @@
-import React from 'react'
+
 import './NavBar.css'
 import logo from '../assets/logo.png'
 
@@ -7,7 +7,7 @@ const NavBar = () => {
     <div className='wrapper_nav'>
         <div className="logo">
             <img src={logo} alt="logo"  className='image'/>
-            <h1 className='indus roboto-medium'>Anandham Industries</h1>
+            <h1 className='indus roboto-medium'>ANANDAM INDUSTRIES</h1>
         </div>
     </div>
   )
