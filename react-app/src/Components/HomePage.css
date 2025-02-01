@@ -1,0 +1,45 @@
+
+
+
+
+.home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: row; 
+    gap: 100px; 
+    padding-left: 250px; 
+    margin: auto 0; 
+}
+
+.create, .view {
+    width: 379px; 
+    height: 97px; 
+    font-size: 20px; 
+    border-radius: 40px;
+    background-color: #C4EDD9;
+    color: #000000;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-weight: 700;
+    text-align: center;
+}
+
+.profile {
+    width: 300px;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 40px;
+    background-color: #e4f0ea;
+    color: #000000;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-weight: 700;
+    text-align: center;
+    position: absolute;
+    top: 120px;
+    right: 20px;
+}
