@@ -17,7 +17,26 @@ const LoginForm = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    navigate("/home"); // Redirects to Page2 after login
+
+    // Fetch user from Supabase
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("username", username)
+      .eq("password", password) // This should ideally use a hashed password check
+
+    if (error) {
+      setError("Database error. Try again later.");
+      return;
+    }
+
+    if (data.length > 0) {
+      // If user is found, navigate to home page
+      navigate("/home");
+    } else {
+      // Show error message
+      setError("Incorrect username or password.");
+    }
   };
 
   return (
