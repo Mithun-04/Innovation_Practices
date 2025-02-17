@@ -5,6 +5,8 @@ import HomePage from "./Components/HomePage";
 import NewProd from "./Components/NewProd";
 import "./App.css";
 import Profile from "./Components/profile";
+import Viewprod from "./Components/viewprod";
+
 
 const App = () => {
   return (
@@ -17,6 +19,7 @@ const App = () => {
             <Route path="/home" element={<HomePage />} />
             <Route path="/newprod" element={<NewProd/>} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/viewprod" element={<Viewprod />} />
           </Routes>
         </div>
       </div>

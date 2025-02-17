@@ -14,7 +14,7 @@ function HomePage() {
               CREATE NEW PRODUCT
           </button>
 
-          <button className="view">
+          <button className="view" onClick={() => navigate("/viewprod")}>
               VIEW PRODUCTS
           </button>
       </div>
