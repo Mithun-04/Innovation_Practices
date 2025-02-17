@@ -1,0 +1,19 @@
+
+
+
+
+
+.prof{
+    align-self: center;
+    background-color: #6A9C89;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    border: 2px solid rgba(255, 255, 255, .2); /* Consolidated border property */
+    width: 400px;
+    padding: 30px 40px;
+    padding-bottom: 50px;
+    border-radius: 10px;
+    margin: 0 auto;
+
+}
+

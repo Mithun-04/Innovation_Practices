@@ -2,12 +2,7 @@ import "./LoginForm.css";
 import { useState } from "react";
 import { FaUser, FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { createClient } from "@supabase/supabase-js";
-
-// Initialize Supabase
-const supabaseUrl = "https://ayblkwfzlmtlmsheoabf.supabase.co";  // Replace with your Supabase URL
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5Ymxrd2Z6bG10bG1zaGVvYWJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk2Mzg2MDIsImV4cCI6MjA1NTIxNDYwMn0.3tUK2A9lsr-xvH7V30vCC3nnLknNOwwS3Z1F5TiW39s";  // Replace with your Supabase anon key
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import supabase from "./supabaseClient";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -17,26 +12,29 @@ const LoginForm = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
 
-    // Fetch user from Supabase
-    const { data, error } = await supabase
+    // Fetch user by username
+    const { data: userData, error: userError } = await supabase
       .from("users")
-      .select("*")
+      .select("id, password") // Ensure password is hashed in DB
       .eq("username", username)
-      .eq("password", password) // This should ideally use a hashed password check
+      .single();
 
-    if (error) {
-      setError("Database error. Try again later.");
+    if (userError || !userData) {
+      setError("Incorrect username or password.");
       return;
     }
 
-    if (data.length > 0) {
-      // If user is found, navigate to home page
-      navigate("/home");
-    } else {
-      // Show error message
+    // Verify password (compare hashed password)
+    if (userData.password !== password) {
       setError("Incorrect username or password.");
+      return;
     }
+
+    // Store user session manually (since we are not using Supabase Auth)
+    localStorage.setItem("userId", userData.id);
+    navigate("/home");
   };
 
   return (

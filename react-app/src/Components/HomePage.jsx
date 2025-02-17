@@ -19,7 +19,7 @@ function HomePage() {
           </button>
       </div>
       <div>
-          <button className='profile'>
+          <button className='profile' onClick={()=> navigate("/profile")}>
               <FaUser className="icon" />
               MY PROFILE
           </button>
