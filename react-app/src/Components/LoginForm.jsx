@@ -7,7 +7,7 @@ const LoginForm = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    navigate("/home"); // Redirects to Page2 after login
+    navigate("/home");
   };
 
   return (

@@ -27,7 +27,7 @@
     width: 50%;
     display: flex;
     align-items: center; /* Ensure content is vertically centered */
-    border: 2px solid rgba(0, 0, 0, 0.2); /* Add border to input-box */
+    border: 2px solid rgba(0, 0, 0, 0.2); 
   }
   
   .input-box input {
