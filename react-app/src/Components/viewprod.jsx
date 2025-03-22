@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
+import { useNavigate } from "react-router-dom";
 import ProductRegistryABI from "../../build/contracts/ProductRegistry.json";
 import "./View.css";
 
@@ -8,6 +9,7 @@ function Viewprod() {
   const [product, setProduct] = useState(null);
   const [contract, setContract] = useState(null);
   const [account, setAccount] = useState("");
+  const navigate = useNavigate();
 
   // Connect to Blockchain and Load Contract
   useEffect(() => {
@@ -30,10 +32,13 @@ function Viewprod() {
           return;
         }
 
-        const contract = new web3.eth.Contract(ProductRegistryABI.abi, deployedNetwork.address);
-        setContract(contract);
+        const contractInstance = new web3.eth.Contract(
+          ProductRegistryABI.abi,
+          deployedNetwork.address
+        );
+
+        setContract(contractInstance);
         setAccount(accounts[0]);
-        console.log("Connected to Blockchain:", contract);
       } catch (error) {
         console.error("Error loading blockchain data:", error);
       }
@@ -42,37 +47,56 @@ function Viewprod() {
     loadBlockchainData();
   }, []);
 
+  // Helper function to format timestamp - Fixed to handle BigInt
+  const formatTimestamp = (timestamp) => {
+    // Convert BigInt to Number for date processing
+    const timestampNum = Number(timestamp);
+    const date = new Date(timestampNum * 1000);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    return `${timestamp.toString()} ${hours}:${minutes}:${seconds}`;
+  };
+
   // Fetch Product Details
   const fetchProductDetails = async () => {
     if (!contract) {
       alert("Contract is not connected!");
       return;
     }
-
     if (!internalPONumber) {
       alert("Please enter an Internal PO Number!");
       return;
     }
 
     try {
-      // Fetch product details
-      const productDetails = await contract.methods.getProductDetails(internalPONumber).call();
-      console.log("Product Details Retrieved:", productDetails);
+      const productDetails = await contract.methods
+        .getProductDetails(internalPONumber)
+        .call();
 
-      // Fetch units
-      const units = await contract.methods.getProductUnits(internalPONumber).call();
-      console.log("Units Retrieved:", units);
+      const units = await contract.methods
+        .getProductUnits(internalPONumber)
+        .call();
 
-      // Fetch timestamps for each unit
-      const timestamps = await Promise.all(
+      const unitStatuses = await Promise.all(
         units.map(async (unit) => {
-          const timestamp = await contract.methods.getUnitTimestamp(internalPONumber, unit).call();
-          return timestamp;
+          const status = await contract.methods
+            .getUnitStatus(internalPONumber, unit)
+            .call();
+          
+          // Get timestamp for each unit
+          const timestamp = await contract.methods
+            .getUnitTimestamp(internalPONumber, unit)
+            .call();
+            
+          return { 
+            unit, 
+            status, 
+            timestamp: formatTimestamp(timestamp) 
+          };
         })
       );
-      console.log("Timestamps Retrieved:", timestamps);
 
-      // Set product state as an object
       setProduct({
         externalPO: productDetails[0],
         internalPO: internalPONumber,
@@ -80,8 +104,7 @@ function Viewprod() {
         companyName: productDetails[2],
         fileHash: productDetails[3],
         isCompleted: productDetails[4],
-        units: units,
-        timestamps: timestamps
+        units: unitStatuses,
       });
     } catch (error) {
       alert("Error retrieving product. Check console for details.");
@@ -110,16 +133,25 @@ function Viewprod() {
           <p><strong>Product Name:</strong> {product.productName}</p>
           <p><strong>Company Name:</strong> {product.companyName}</p>
           <p><strong>File Hash:</strong> {product.fileHash}</p>
-          <div>
-            <strong>Units and Timestamps:</strong>
+
+          <div className="unit-status-section">
+            <h3>Units and Timestamp:</h3>
             <ul>
-              {product.units.map((unit, index) => (
+              {product.units.map((unitObj, index) => (
                 <li key={index}>
-                  {unit} - Timestamp: {new Date(Number(product.timestamps[index]) * 1000).toLocaleString()}
+                  <strong>{unitObj.unit}</strong> {unitObj.status} timestamp: {unitObj.timestamp}
                 </li>
               ))}
             </ul>
           </div>
+
+          {/* Status Update Button */}
+          <button
+            className="status-update-button"
+            onClick={() => navigate(`/status-update/${product.internalPO}`)}
+          >
+            Status Update
+          </button>
         </div>
       )}
     </div>
