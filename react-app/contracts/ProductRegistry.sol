@@ -63,7 +63,6 @@ contract ProductRegistry {
 
         productKeys.push(_internalPO);
 
-        // Emit detailed event for debugging
         emit ProductCreated(
             _internalPO,
             _externalPO,
@@ -108,5 +107,13 @@ contract ProductRegistry {
         require(bytes(products[_internalPO].internalPO).length > 0, "Product does not exist");
         require(bytes(products[_internalPO].unitStatus[_unit]).length > 0, "Unit does not exist");
         return products[_internalPO].unitStatus[_unit];
+    }
+    
+    // New getter for unit timestamp
+    function getUnitTimestamp(string memory _internalPO, string memory _unit) public view returns (uint256) {
+        require(bytes(products[_internalPO].internalPO).length > 0, "Product does not exist");
+        uint256 timestamp = products[_internalPO].timestamps[_unit];
+        require(timestamp != 0, "Unit does not exist or timestamp not set");
+        return timestamp;
     }
 }

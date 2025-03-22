@@ -5,7 +5,7 @@ import "./View.css";
 
 function Viewprod() {
   const [internalPONumber, setInternalPONumber] = useState("");
-  const [retrievedProduct, setRetrievedProduct] = useState(null);
+  const [product, setProduct] = useState(null);
   const [contract, setContract] = useState(null);
   const [account, setAccount] = useState("");
 
@@ -55,16 +55,34 @@ function Viewprod() {
     }
 
     try {
-      const product = await contract.methods.getProduct(internalPONumber).call();
-      console.log("Product Retrieved:", product);
-      
-      // If no product found, show alert
-      if (!product[0]) {
-        alert("Product not found!");
-        return;
-      }
+      // Fetch product details
+      const productDetails = await contract.methods.getProductDetails(internalPONumber).call();
+      console.log("Product Details Retrieved:", productDetails);
 
-      setRetrievedProduct(product);
+      // Fetch units
+      const units = await contract.methods.getProductUnits(internalPONumber).call();
+      console.log("Units Retrieved:", units);
+
+      // Fetch timestamps for each unit
+      const timestamps = await Promise.all(
+        units.map(async (unit) => {
+          const timestamp = await contract.methods.getUnitTimestamp(internalPONumber, unit).call();
+          return timestamp;
+        })
+      );
+      console.log("Timestamps Retrieved:", timestamps);
+
+      // Set product state as an object
+      setProduct({
+        externalPO: productDetails[0],
+        internalPO: internalPONumber,
+        productName: productDetails[1],
+        companyName: productDetails[2],
+        fileHash: productDetails[3],
+        isCompleted: productDetails[4],
+        units: units,
+        timestamps: timestamps
+      });
     } catch (error) {
       alert("Error retrieving product. Check console for details.");
       console.error("Error fetching product details:", error);
@@ -84,14 +102,24 @@ function Viewprod() {
         <button onClick={fetchProductDetails}>View</button>
       </div>
 
-      {retrievedProduct && (
+      {product && (
         <div className="product-details">
           <h2>Product Details:</h2>
-          <p><strong>External PO:</strong> {retrievedProduct[0]}</p>
-          <p><strong>Internal PO:</strong> {retrievedProduct[1]}</p>
-          <p><strong>Product Name:</strong> {retrievedProduct[2]}</p>
-          <p><strong>Company Name:</strong> {retrievedProduct[3]}</p>
-          <p><strong>File Hash:</strong> {retrievedProduct[4]}</p>
+          <p><strong>External PO:</strong> {product.externalPO}</p>
+          <p><strong>Internal PO:</strong> {product.internalPO}</p>
+          <p><strong>Product Name:</strong> {product.productName}</p>
+          <p><strong>Company Name:</strong> {product.companyName}</p>
+          <p><strong>File Hash:</strong> {product.fileHash}</p>
+          <div>
+            <strong>Units and Timestamps:</strong>
+            <ul>
+              {product.units.map((unit, index) => (
+                <li key={index}>
+                  {unit} - Timestamp: {new Date(Number(product.timestamps[index]) * 1000).toLocaleString()}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       )}
     </div>
