@@ -7,7 +7,6 @@ import Viewprod from "./Components/viewprod";
 import Profile from "./Components/profile";
 import "./App.css";
 
-
 const App = () => {
   return (
     <Router>
@@ -18,8 +17,6 @@ const App = () => {
             <Route path="/" element={<LoginForm />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/newprod" element={<NewProd/>} />
-            <Route path="/viewprod" element={<Viewprod />} />
-            <Route path="/profile" element={<Profile/>} />
           </Routes>
         </div>
       </div>
