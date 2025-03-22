@@ -14,12 +14,12 @@ function HomePage() {
               CREATE NEW PRODUCT
           </button>
 
-          <button className="view">
+          <button className="view" onClick={() => navigate("/viewprod")}>
               VIEW PRODUCTS
           </button>
       </div>
       <div>
-          <button className='profile'>
+          <button className='profile' onClick={()=> navigate("/profile")}>
               <FaUser className="icon" />
               MY PROFILE
           </button>

@@ -1,133 +1,132 @@
-
 .container {
-    align-self: center;
-    background-color: #6A9C89;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
-    border: 2px solid rgba(255, 255, 255, .2);
-    width: 1200px;
-    height: 900px;
-    padding: 30px 40px;
-    padding-bottom: 50px;
-    border-radius: 10px;
-    margin: 0 auto;
-  }
-  .container h1 {
-    color: #000000;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  /* Input Box Styling */
-  .container .input-box {
-    background-color: white;
-    border-radius: 40px;
-    padding-left: 50px;
-    margin: 30px 0;
-    height: 50px;
-    width: 50%;
-    display: flex;
-    align-items: center; /* Ensure content is vertically centered */
-    border: 2px solid rgba(0, 0, 0, 0.2); 
-  }
-  
-  .input-box input {
-    width: 100%;
-    height: 100%;
-    border: none; /* Remove border from input */
-    background: transparent; /* Make background transparent */
-    border-radius: 40px;
-    outline: none;
-    padding-left: 1rem;
-    padding-right: 3rem;
-    color: #000000;
-    font-size: 17px;
-  }
-  
-  .input-box ::placeholder {
-    color: rgb(0, 0, 0);
-  }
-  
-  /* Icon styling inside input */
-  .input-box .icon {
-    position: relative;
-    top: 0; /* Adjust icon position */
-    right: 35px;
-    cursor: pointer;
-    color: #000000;
-  }
-  
-  
-  .wrapper h1 {
-    color: #000000;
-    text-align: center; 
-  }
-  
- 
-  .container button {
-    display: block; 
-    width: 60%;
-    height: 45px;
-    font-size: 17px;
-    border-radius: 40px;
-    background-color: #C4EDD9;
-    color: #000000;
-    border: none;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
-    cursor: pointer;
-    font-weight: 700;
-    margin: 0 auto;
-  }
-  
-  
-  .check-box {
-    margin-bottom: 20px;
-  }
-  
-  .check-box label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .checkbox-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .checkbox-container input[type="checkbox"] {
-    margin-right: 10px;
-  }
-  
-  .checkbox-container label {
-    font-size: 16px;
-  }
-  
-  .uploading label {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 15px;
-    border: 2px solid #000;
-    cursor: pointer;
-    font-weight: bold;
-    background-color: #fff;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-  
-  .uploading label:hover {
-    background-color: #f3f3f3;
-  }
-  
-  .uploading input[type="file"] {
-    display: none;
-  }
-  
-  .uploading p {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #333;
-  }
-  
-  
+  align-self: center;
+  background-color: #6A9C89;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  border: 2px solid rgba(255, 255, 255, .2);
+  width: 1200px;
+  height: 900px;
+  padding: 30px 40px;
+  padding-bottom: 50px;
+  border-radius: 10px;
+  margin: 0 auto;
+}
+.container h1 {
+  color: #000000;
+  text-align: center;
+  margin-bottom: 20px;
+}
+/* Input Box Styling */
+.container .input-box {
+  background-color: white;
+  border-radius: 40px;
+  padding-left: 50px;
+  margin: 30px 0;
+  height: 50px;
+  width: 50%;
+  display: flex;
+  align-items: center; /* Ensure content is vertically centered */
+  border: 2px solid rgba(0, 0, 0, 0.2); 
+}
+
+.input-box input {
+  width: 100%;
+  height: 100%;
+  border: none; /* Remove border from input */
+  background: transparent; /* Make background transparent */
+  border-radius: 40px;
+  outline: none;
+  padding-left: 1rem;
+  padding-right: 3rem;
+  color: #000000;
+  font-size: 17px;
+}
+
+.input-box ::placeholder {
+  color: rgb(0, 0, 0);
+}
+
+/* Icon styling inside input */
+.input-box .icon {
+  position: relative;
+  top: 0; /* Adjust icon position */
+  right: 35px;
+  cursor: pointer;
+  color: #000000;
+}
+
+
+.wrapper h1 {
+  color: #000000;
+  text-align: center; 
+}
+
+
+.container button {
+  display: block; 
+  width: 60%;
+  height: 45px;
+  font-size: 17px;
+  border-radius: 40px;
+  background-color: #C4EDD9;
+  color: #000000;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  cursor: pointer;
+  font-weight: 700;
+  margin: 0 auto;
+}
+
+
+.check-box {
+  margin-bottom: 20px;
+}
+
+.check-box label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.checkbox-container label {
+  font-size: 16px;
+}
+
+.uploading label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 2px solid #000;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #fff;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.uploading label:hover {
+  background-color: #f3f3f3;
+}
+
+.uploading input[type="file"] {
+  display: none;
+}
+
+.uploading p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+
