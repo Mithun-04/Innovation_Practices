@@ -1,0 +1,253 @@
+.status-update-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: white;
+  }
+  
+  .status-update-container h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 1rem;
+  }
+  
+  .account-info {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    word-break: break-all;
+    border-left: 4px solid #3498db;
+    color: #2c3e50;
+  }
+  
+  .unit-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .unit-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 1.2rem;
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #fdfdfd;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .unit-item:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .unit-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .unit-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  .unit-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-width: 100px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .unit-timestamp {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin-left: auto;
+    margin-right: 0;
+    font-style: italic;
+  }
+  
+  .status-todo {
+    background-color: #e9ecef;
+    color: #495057;
+    border: 1px solid #ced4da;
+  }
+  
+  .status-progress {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+  }
+  
+  .status-done {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .unit-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 0.5rem;
+  }
+  
+  .unit-actions button {
+    flex: 1;
+    padding: 10px 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .unit-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  
+  /* Button styling */
+  .button-todo {
+    background-color: #e2e3e5;
+    color: #383d41;
+  }
+  
+  .button-progress {
+    background-color: #ffeeba;
+    color: #856404;
+  }
+  
+  .button-done {
+    background-color: #c3e6cb;
+    color: #155724;
+  }
+  
+  /* Hover effects only when not disabled */
+  .button-todo:hover:not(:disabled) {
+    background-color: #d6d8db;
+    transform: translateY(-2px);
+  }
+  
+  .button-progress:hover:not(:disabled) {
+    background-color: #ffe8a1;
+    transform: translateY(-2px);
+  }
+  
+  .button-done:hover:not(:disabled) {
+    background-color: #b1dfbb;
+    transform: translateY(-2px);
+  }
+  
+  .button-todo:active:not(:disabled),
+  .button-progress:active:not(:disabled),
+  .button-done:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  /* Remove native selectors since we're using React's disabled prop */
+  /* Focus on making the disabled state look good instead */
+  button:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin: 3rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .loading:after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin: 20px auto;
+    border-radius: 50%;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .error {
+    text-align: center;
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+  
+  .error button {
+    margin-top: 1rem;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  
+  .error button:hover {
+    background-color: #5a6268;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .status-update-container {
+      padding: 1.5rem;
+      margin: 1rem;
+    }
+    
+    .unit-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    
+    .unit-status, .unit-timestamp {
+      margin-left: 0;
+    }
+    
+    .unit-actions {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
