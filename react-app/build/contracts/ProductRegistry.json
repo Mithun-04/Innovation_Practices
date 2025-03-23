@@ -20437,13 +20437,8 @@
     "1337": {
       "events": {},
       "links": {},
-<<<<<<< HEAD
-      "address": "0x59eE33099420b329d9C29B109AA3Dc41f03C912F",
-      "transactionHash": "0x0d7ccd4056dfb9c8d2f98e21286ac24581a23d2ee5bc26eead0a07bdc46ee39d"
-=======
       "address": "0x301560514A2C3a2bA2fdcfE19879D56424c4Cd54",
       "transactionHash": "0x3c5cdf735a28211869b0f4c44f2e9817e1cb950ed18b27435650d521c8a81462"
->>>>>>> sim
     },
     "5777": {
       "events": {},
@@ -20453,11 +20448,7 @@
     }
   },
   "schemaVersion": "3.4.16",
-<<<<<<< HEAD
-  "updatedAt": "2025-03-22T08:18:30.758Z",
-=======
   "updatedAt": "2025-03-22T16:20:05.657Z",
->>>>>>> sim
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
