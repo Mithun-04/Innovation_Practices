@@ -2,6 +2,7 @@
 import './HomePage.css';
 import { FaUser} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import filterIcon from "../assets/fil.png"; 
 
 
 function HomePage() {
@@ -22,6 +23,12 @@ function HomePage() {
           <button className='profile' onClick={()=> navigate("/profile")}>
               <FaUser className="icon" />
               MY PROFILE
+          </button>
+      </div>
+      <div>
+          <button className='filter' onClick={()=> navigate("/filter")}>
+              <img src={filterIcon} alt="Filter Icon" className="filter-icon"/>
+              FILTER PRODUCTS
           </button>
       </div>
     </div>
