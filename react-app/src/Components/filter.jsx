@@ -1,55 +1,106 @@
 import React, { useState, useEffect } from 'react';
+import Web3 from 'web3';
+import ProductRegistryABI from "../../build/contracts/ProductRegistry.json"; 
 
 const ProductTrackingFilter = () => {
-  // States for filters and data
   const [searchTerm, setSearchTerm] = useState('');
   const [showCompletedOnly, setShowCompletedOnly] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]); // ✅ Stores original data
   const [isLoading, setIsLoading] = useState(true);
+  const [web3, setWeb3] = useState(null);
+  const [contract, setContract] = useState(null);
+  const [account, setAccount] = useState('');
 
-  // Sample data - in a real application, this would come from an API
-  const sampleProducts = [
-    { id: 1, name: "Industrial Sensor X200", company: "TechCorp", status: "Completed", stage: 4, lastUpdated: "2025-03-15" },
-    { id: 2, name: "Smart Tracker Pro", company: "TechCorp", status: "In Progress", stage: 2, lastUpdated: "2025-03-20" },
-    { id: 3, name: "Location Beacon Mini", company: "InnoSystems", status: "Completed", stage: 4, lastUpdated: "2025-03-10" },
-    { id: 4, name: "Asset Tag RFID-400", company: "InnoSystems", status: "In Progress", stage: 3, lastUpdated: "2025-03-22" },
-    { id: 5, name: "Container Monitor", company: "LogiTrack", status: "Completed", stage: 4, lastUpdated: "2025-03-18" },
-    { id: 6, name: "Fleet Tracker GPS", company: "LogiTrack", status: "In Progress", stage: 1, lastUpdated: "2025-03-21" },
-  ];
-
-  // Unique companies for dropdown
-  const companies = [...new Set(sampleProducts.map(product => product.company))];
-
-  // Simulate API call
   useEffect(() => {
-    setTimeout(() => {
-      setFilteredProducts(sampleProducts);
-      setIsLoading(false);
-    }, 500);
+    const initBlockchain = async () => {
+      if (window.ethereum) {
+        try {
+          const web3Instance = new Web3(window.ethereum);
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          const accounts = await web3Instance.eth.getAccounts();
+          const networkId = await web3Instance.eth.net.getId();
+
+          const deployedNetwork = ProductRegistryABI.networks[networkId];
+          if (!deployedNetwork) {
+            alert("Smart contract not deployed on the detected network.");
+            return;
+          }
+
+          const contractInstance = new web3Instance.eth.Contract(
+            ProductRegistryABI.abi,
+            deployedNetwork.address
+          );
+
+          setWeb3(web3Instance);
+          setContract(contractInstance);
+          setAccount(accounts[0]);
+
+          console.log('Connected Account:', accounts[0]);
+          console.log('Smart Contract Address:', deployedNetwork.address);
+
+          await fetchProducts(contractInstance);
+
+        } catch (error) {
+          console.error("Error connecting to MetaMask:", error);
+        }
+      } else {
+        alert("Please install MetaMask.");
+      }
+    };
+
+    initBlockchain();
   }, []);
 
-  // Filter products based on search term, company, and completion status
+  // Fetch all products from blockchain
+  const fetchProducts = async (contractInstance) => {
+    try {
+      const productKeys = await contractInstance.methods.getAllProductKeys().call();
+      let products = [];
+
+      for (let i = 0; i < productKeys.length; i++) {
+        const key = productKeys[i];
+        const productData = await contractInstance.methods.getProductDetails(key).call();
+
+        products.push({
+          id: i + 1,
+          name: productData[1],
+          company: productData[2],
+          status: productData[4] ? 'Completed' : 'In Progress',
+          stage: productData[5], // Number of units
+          lastUpdated: new Date().toISOString().split('T')[0]
+        });
+      }
+
+      setAllProducts(products); // ✅ Store original data
+      setFilteredProducts(products); // ✅ Initial display
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  // Apply filters
   useEffect(() => {
-    let results = sampleProducts;
-    
+    let results = allProducts; // ✅ Always filter from original data
+
     if (searchTerm) {
-      results = results.filter(product => 
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.company.toLowerCase().includes(searchTerm.toLowerCase())
+      results = results.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    
+
     if (selectedCompany) {
       results = results.filter(product => product.company === selectedCompany);
     }
-    
+
     if (showCompletedOnly) {
       results = results.filter(product => product.status === "Completed");
     }
-    
+
     setFilteredProducts(results);
-  }, [searchTerm, selectedCompany, showCompletedOnly]);
+  }, [searchTerm, selectedCompany, showCompletedOnly, allProducts]); // ✅ Depend on allProducts
 
   // Reset all filters
   const resetFilters = () => {
@@ -58,355 +109,74 @@ const ProductTrackingFilter = () => {
     setShowCompletedOnly(false);
   };
 
-  // Inline CSS styles
-  const styles = {
-    container: {
-      width: '100%',
-      maxWidth: '1200px',
-      margin: '0 auto',
-      backgroundColor: 'white',
-      borderRadius: '8px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-      padding: '24px'
-    },
-    header: {
-      fontSize: '24px',
-      fontWeight: 'bold',
-      color: '#333',
-      marginBottom: '24px'
-    },
-    filterSection: {
-      backgroundColor: '#f9fafb',
-      borderRadius: '8px',
-      padding: '16px',
-      marginBottom: '24px'
-    },
-    filterGrid: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-      gap: '16px'
-    },
-    searchContainer: {
-      position: 'relative',
-      gridColumn: 'span 2'
-    },
-    searchInput: {
-      width: '100%',
-      padding: '8px 12px',
-      borderRadius: '4px',
-      border: '1px solid #d1d5db',
-      outline: 'none',
-      fontSize: '14px'
-    },
-    searchIcon: {
-      position: 'absolute',
-      right: '12px',
-      top: '50%',
-      transform: 'translateY(-50%)',
-      color: '#9ca3af'
-    },
-    selectInput: {
-      width: '100%',
-      padding: '8px 12px',
-      borderRadius: '4px',
-      border: '1px solid #d1d5db',
-      outline: 'none',
-      fontSize: '14px',
-      backgroundColor: 'white'
-    },
-    checkboxContainer: {
-      display: 'flex',
-      alignItems: 'center'
-    },
-    checkbox: {
-      marginRight: '8px'
-    },
-    checkboxLabel: {
-      fontSize: '14px',
-      color: '#4b5563'
-    },
-    resetButton: {
-      marginLeft: 'auto',
-      padding: '4px 8px',
-      fontSize: '12px',
-      color: '#4b5563',
-      background: 'none',
-      border: 'none',
-      cursor: 'pointer'
-    },
-    resetButtonHover: {
-      color: '#3b82f6'
-    },
-    tableContainer: {
-      overflowX: 'auto'
-    },
-    table: {
-      width: '100%',
-      borderCollapse: 'collapse',
-      fontSize: '14px'
-    },
-    tableHead: {
-      backgroundColor: '#f3f4f6'
-    },
-    tableHeader: {
-      padding: '12px 16px',
-      textAlign: 'left',
-      fontWeight: '500',
-      color: '#6b7280',
-      textTransform: 'uppercase',
-      fontSize: '12px',
-      letterSpacing: '0.05em'
-    },
-    tableRow: {
-      borderBottom: '1px solid #e5e7eb'
-    },
-    tableRowHover: {
-      backgroundColor: '#f9fafb'
-    },
-    tableCell: {
-      padding: '12px 16px',
-      color: '#4b5563'
-    },
-    statusBadge: {
-      padding: '4px 8px',
-      borderRadius: '9999px',
-      fontSize: '12px',
-      fontWeight: '500',
-      display: 'inline-block'
-    },
-    completedBadge: {
-      backgroundColor: '#dcfce7',
-      color: '#166534'
-    },
-    inProgressBadge: {
-      backgroundColor: '#fef9c3',
-      color: '#854d0e'
-    },
-    progressContainer: {
-      display: 'flex',
-      alignItems: 'center'
-    },
-    progressBar: {
-      width: '100%',
-      backgroundColor: '#e5e7eb',
-      height: '8px',
-      borderRadius: '9999px'
-    },
-    progressFill: {
-      backgroundColor: '#3b82f6',
-      height: '8px',
-      borderRadius: '9999px'
-    },
-    progressText: {
-      marginLeft: '8px',
-      fontSize: '12px',
-      color: '#9ca3af'
-    },
-    loadingContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '160px'
-    },
-    spinner: {
-      borderRadius: '50%',
-      width: '32px',
-      height: '32px',
-      border: '2px solid transparent',
-      borderTopColor: '#3b82f6',
-      borderRightColor: '#3b82f6',
-      animation: 'spin 1s linear infinite'
-    },
-    emptyContainer: {
-      textAlign: 'center',
-      padding: '40px 0'
-    },
-    emptyIcon: {
-      margin: '0 auto',
-      height: '48px',
-      width: '48px',
-      color: '#9ca3af'
-    },
-    emptyTitle: {
-      marginTop: '8px',
-      fontSize: '16px',
-      fontWeight: '500',
-      color: '#111827'
-    },
-    emptyText: {
-      marginTop: '4px',
-      fontSize: '14px',
-      color: '#6b7280'
-    },
-    emptyButton: {
-      marginTop: '24px',
-      padding: '8px 16px',
-      backgroundColor: '#2563eb',
-      color: 'white',
-      border: 'none',
-      borderRadius: '4px',
-      fontSize: '14px',
-      fontWeight: '500',
-      cursor: 'pointer'
-    }
-  };
-
-  // Create a style for spinning animation
-  const spinKeyframes = `
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  `;
-
   return (
-    <>
-      {/* Add the keyframes animation to the document */}
-      <style>{spinKeyframes}</style>
-      
-      <div style={styles.container}>
-        <h2 style={styles.header}>Product Tracking Dashboard</h2>
-        
-        {/* Search and Filter Section */}
-        <div style={styles.filterSection}>
-          <div style={styles.filterGrid}>
-            {/* Search Input */}
-            <div style={styles.searchContainer}>
-              <input
-                type="text"
-                placeholder="Search products..."
-                style={styles.searchInput}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <svg 
-                style={styles.searchIcon} 
-                width="20" 
-                height="20" 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-            
-            {/* Company Dropdown */}
-            <div>
-              <select
-                style={styles.selectInput}
-                value={selectedCompany}
-                onChange={(e) => setSelectedCompany(e.target.value)}
-              >
-                <option value="">All Companies</option>
-                {companies.map(company => (
-                  <option key={company} value={company}>{company}</option>
-                ))}
-              </select>
-            </div>
-            
-            {/* Completed Toggle */}
-            <div style={styles.checkboxContainer}>
-              <input
-                id="completed-only"
-                type="checkbox"
-                style={styles.checkbox}
-                checked={showCompletedOnly}
-                onChange={(e) => setShowCompletedOnly(e.target.checked)}
-              />
-              <label htmlFor="completed-only" style={styles.checkboxLabel}>
-                Completed Only
-              </label>
-              
-              <button
-                onClick={resetFilters}
-                style={styles.resetButton}
-                onMouseOver={(e) => e.target.style.color = '#3b82f6'}
-                onMouseOut={(e) => e.target.style.color = '#4b5563'}
-              >
-                Reset
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        {/* Results Section */}
-        <div style={styles.tableContainer}>
-          {isLoading ? (
-            <div style={styles.loadingContainer}>
-              <div style={styles.spinner}></div>
-            </div>
-          ) : filteredProducts.length > 0 ? (
-            <table style={styles.table}>
-              <thead style={styles.tableHead}>
-                <tr>
-                  <th style={styles.tableHeader}>Product</th>
-                  <th style={styles.tableHeader}>Company</th>
-                  <th style={styles.tableHeader}>Status</th>
-                  <th style={styles.tableHeader}>Stage</th>
-                  <th style={styles.tableHeader}>Last Updated</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProducts.map(product => (
-                  <tr 
-                    key={product.id} 
-                    style={styles.tableRow}
-                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
-                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                  >
-                    <td style={styles.tableCell}>{product.name}</td>
-                    <td style={styles.tableCell}>{product.company}</td>
-                    <td style={styles.tableCell}>
-                      <span style={{
-                        ...styles.statusBadge,
-                        ...(product.status === 'Completed' ? styles.completedBadge : styles.inProgressBadge)
-                      }}>
-                        {product.status}
-                      </span>
-                    </td>
-                    <td style={styles.tableCell}>
-                      <div style={styles.progressContainer}>
-                        <div style={styles.progressBar}>
-                          <div 
-                            style={{
-                              ...styles.progressFill,
-                              width: `${(product.stage / 4) * 100}%`
-                            }}
-                          ></div>
-                        </div>
-                        <span style={styles.progressText}>Stage {product.stage}/4</span>
-                      </div>
-                    </td>
-                    <td style={styles.tableCell}>{product.lastUpdated}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <div style={styles.emptyContainer}>
-              <svg 
-                style={styles.emptyIcon} 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <h3 style={styles.emptyTitle}>No products found</h3>
-              <p style={styles.emptyText}>Try adjusting your search or filter criteria.</p>
-              <button
-                onClick={resetFilters}
-                style={styles.emptyButton}
-              >
-                Reset Filters
-              </button>
-            </div>
-          )}
-        </div>
+    <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '24px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+      <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#333', marginBottom: '24px' }}>Product Tracking Dashboard</h2>
+
+      {/* Search and Filter Section */}
+      <div style={{ marginBottom: '24px', display: 'flex', gap: '16px' }}>
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid #d1d5db' }}
+        />
+        <select
+          value={selectedCompany}
+          onChange={(e) => setSelectedCompany(e.target.value)}
+          style={{ padding: '8px', borderRadius: '4px', border: '1px solid #d1d5db' }}
+        >
+          <option value="">All Companies</option>
+          {[...new Set(allProducts.map(p => p.company))].map(company => ( // ✅ Ensure all companies always appear
+            <option key={company} value={company}>{company}</option>
+          ))}
+        </select>
+        <label>
+          <input
+            type="checkbox"
+            checked={showCompletedOnly}
+            onChange={(e) => setShowCompletedOnly(e.target.checked)}
+          />
+          Completed Only
+        </label>
+        <button onClick={resetFilters} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #2563eb', backgroundColor: '#2563eb', color: 'white' }}>Reset</button>
       </div>
-    </>
+
+      {/* Product Table */}
+      {isLoading ? (
+        <p>Loading products...</p>
+      ) : filteredProducts.length > 0 ? (
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead style={{ backgroundColor: '#f3f4f6' }}>
+            <tr>
+              <th style={{ padding: '12px', textAlign: 'left' }}>Product</th>
+              <th style={{ padding: '12px', textAlign: 'left' }}>Company</th>
+              <th style={{ padding: '12px', textAlign: 'left' }}>Status</th>
+              <th style={{ padding: '12px', textAlign: 'left' }}>Stage</th>
+              <th style={{ padding: '12px', textAlign: 'left' }}>Last Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredProducts.map(product => (
+              <tr key={product.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                <td style={{ padding: '12px' }}>{product.name}</td>
+                <td style={{ padding: '12px' }}>{product.company}</td>
+                <td style={{ padding: '12px' }}>
+                  <span style={{ padding: '4px 8px', borderRadius: '9999px', backgroundColor: product.status === 'Completed' ? '#dcfce7' : '#fef9c3', color: product.status === 'Completed' ? '#166534' : '#854d0e' }}>
+                    {product.status}
+                  </span>
+                </td>
+                <td style={{ padding: '12px' }}>Stage {product.stage}/4</td>
+                <td style={{ padding: '12px' }}>{product.lastUpdated}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No products found</p>
+      )}
+    </div>
   );
 };
 
