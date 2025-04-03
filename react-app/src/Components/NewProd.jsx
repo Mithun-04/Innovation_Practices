@@ -204,13 +204,7 @@ function NewProd() {
         <button type="submit">Create Product</button>
       </form>
       
-      {transactionHash && (
-        <div className="transaction-details">
-          <h3>Transaction Successful</h3>
-          <p>Transaction Hash: {transactionHash}</p>
-          <button onClick={verifyProduct}>Verify Units on Blockchain</button>
-        </div>
-      )}
+      
       
       
     </div>

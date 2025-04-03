@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Web3 from "web3";
 import { useNavigate } from "react-router-dom";
 import ProductRegistryABI from "../../build/contracts/ProductRegistry.json";
-import "./View.css";
+import "./viewprod.css";
 
 function Viewprod() {
   const [internalPONumber, setInternalPONumber] = useState("");
@@ -330,12 +330,6 @@ function Viewprod() {
       
       {error && <div className="error-message">{error}</div>}
       
-      <div className="network-info">
-        {networkInfo && (
-          <p>Connected to: Chain ID: {networkInfo.chainId}, Network ID: {networkInfo.networkId}, Type: {networkInfo.networkType}</p>
-        )}
-        {account && <p>Account: {account}</p>}
-      </div>
       
       <div className="retrieve-section">
         <label>Enter Internal PO Number</label>

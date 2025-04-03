@@ -272,7 +272,7 @@ function StatusUpdate() {
 
   return (
     <div className="status-update-container">
-      <h1>Update Unit Status - {internalPO}</h1>
+      <h1>Update Unit Status of {internalPO}</h1>
       
       {error && (
         <div className="error-message">
@@ -286,7 +286,7 @@ function StatusUpdate() {
       ) : (
         <>
           <div className="connection-info">
-            <p className="account-info">Connected Account: {account}</p>
+            
             {!contract && (
               <button 
                 onClick={connectToBlockchain}

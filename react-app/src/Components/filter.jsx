@@ -109,72 +109,215 @@ const ProductTrackingFilter = () => {
     setShowCompletedOnly(false);
   };
 
+  // Style constants using your requested color theme
+  const styles = {
+    container: {
+      width: '100%', 
+      maxWidth: '1200px', 
+      margin: '0 auto', 
+      padding: '32px', 
+      backgroundColor: '#f8fdfb', 
+      borderRadius: '12px', 
+      boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
+      border: '1px solid #C4FFE0'
+    },
+    heading: {
+      fontSize: '30px', 
+      fontWeight: '700', 
+      color: '#2E5947', 
+      marginBottom: '32px',
+      borderBottom: '3px solid #92DFC5',
+      paddingBottom: '12px'
+    },
+    filterContainer: {
+      marginBottom: '32px', 
+      display: 'flex', 
+      gap: '18px',
+      alignItems: 'center'
+    },
+    searchInput: {
+      flex: 1, 
+      padding: '12px 16px', 
+      borderRadius: '8px', 
+      border: '2px solid #7EBEA3',
+      fontSize: '16px',
+      fontWeight: '500'
+    },
+    selectInput: {
+      padding: '12px 16px', 
+      borderRadius: '8px', 
+      border: '2px solid #7EBEA3',
+      backgroundColor: '#fff',
+      fontSize: '16px',
+      fontWeight: '500',
+      color: '#2E5947'
+    },
+    checkboxLabel: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      fontSize: '16px',
+      fontWeight: '500',
+      color: '#2E5947'
+    },
+    checkbox: {
+      width: '18px',
+      height: '18px',
+      accentColor: '#7EBEA3'
+    },
+    resetButton: {
+      padding: '12px 20px', 
+      borderRadius: '8px', 
+      border: 'none', 
+      backgroundColor: '#7EBEA3', 
+      color: 'white',
+      fontSize: '16px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      transition: 'background-color 0.2s',
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+    },
+    tableContainer: {
+      borderRadius: '10px',
+      overflow: 'hidden',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.05)',
+      border: '1px solid #C4FFE0'
+    },
+    tableHeader: {
+      backgroundColor: '#92DFC5'
+    },
+    tableHeaderCell: {
+      padding: '16px', 
+      textAlign: 'left',
+      fontSize: '18px',
+      fontWeight: '600',
+      color: '#2E5947'
+    },
+    tableRow: {
+      borderBottom: '1px solid #C4FFE0',
+      transition: 'background-color 0.2s'
+    },
+    tableRowHover: {
+      backgroundColor: '#f0faf7'
+    },
+    tableCell: {
+      padding: '16px',
+      fontSize: '16px',
+      fontWeight: '500'
+    },
+    statusBadgeCompleted: {
+      padding: '6px 12px', 
+      borderRadius: '9999px', 
+      backgroundColor: '#dcfce7', 
+      color: '#166534',
+      fontSize: '14px',
+      fontWeight: '600'
+    },
+    statusBadgeInProgress: {
+      padding: '6px 12px', 
+      borderRadius: '9999px', 
+      backgroundColor: '#fef9c3', 
+      color: '#854d0e',
+      fontSize: '14px',
+      fontWeight: '600'
+    },
+    stageText: {
+      fontSize: '16px',
+      fontWeight: '500',
+      color: '#2E5947'
+    },
+    loadingText: {
+      fontSize: '18px',
+      fontWeight: '500',
+      color: '#2E5947',
+      textAlign: 'center',
+      padding: '40px 0'
+    },
+    noProductsText: {
+      fontSize: '18px',
+      fontWeight: '500',
+      color: '#2E5947',
+      textAlign: 'center',
+      padding: '40px 0'
+    }
+  };
+
   return (
-    <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '24px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-      <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#333', marginBottom: '24px' }}>Product Tracking Dashboard</h2>
+    <div style={styles.container}>
+      <h2 style={styles.heading}>Product Tracking Dashboard</h2>
 
       {/* Search and Filter Section */}
-      <div style={{ marginBottom: '24px', display: 'flex', gap: '16px' }}>
+      <div style={styles.filterContainer}>
         <input
           type="text"
           placeholder="Search products..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid #d1d5db' }}
+          style={styles.searchInput}
         />
         <select
           value={selectedCompany}
           onChange={(e) => setSelectedCompany(e.target.value)}
-          style={{ padding: '8px', borderRadius: '4px', border: '1px solid #d1d5db' }}
+          style={styles.selectInput}
         >
           <option value="">All Companies</option>
-          {[...new Set(allProducts.map(p => p.company))].map(company => ( // ✅ Ensure all companies always appear
+          {[...new Set(allProducts.map(p => p.company))].map(company => (
             <option key={company} value={company}>{company}</option>
           ))}
         </select>
-        <label>
+        <label style={styles.checkboxLabel}>
           <input
             type="checkbox"
             checked={showCompletedOnly}
             onChange={(e) => setShowCompletedOnly(e.target.checked)}
+            style={styles.checkbox}
           />
           Completed Only
         </label>
-        <button onClick={resetFilters} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #2563eb', backgroundColor: '#2563eb', color: 'white' }}>Reset</button>
+        <button 
+          onClick={resetFilters} 
+          style={styles.resetButton}
+        >
+          Reset
+        </button>
       </div>
 
       {/* Product Table */}
       {isLoading ? (
-        <p>Loading products...</p>
+        <p style={styles.loadingText}>Loading products...</p>
       ) : filteredProducts.length > 0 ? (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead style={{ backgroundColor: '#f3f4f6' }}>
-            <tr>
-              <th style={{ padding: '12px', textAlign: 'left' }}>Product</th>
-              <th style={{ padding: '12px', textAlign: 'left' }}>Company</th>
-              <th style={{ padding: '12px', textAlign: 'left' }}>Status</th>
-              <th style={{ padding: '12px', textAlign: 'left' }}>Stage</th>
-              <th style={{ padding: '12px', textAlign: 'left' }}>Last Updated</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredProducts.map(product => (
-              <tr key={product.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
-                <td style={{ padding: '12px' }}>{product.name}</td>
-                <td style={{ padding: '12px' }}>{product.company}</td>
-                <td style={{ padding: '12px' }}>
-                  <span style={{ padding: '4px 8px', borderRadius: '9999px', backgroundColor: product.status === 'Completed' ? '#dcfce7' : '#fef9c3', color: product.status === 'Completed' ? '#166534' : '#854d0e' }}>
-                    {product.status}
-                  </span>
-                </td>
-                <td style={{ padding: '12px' }}>Stage {product.stage}/4</td>
-                <td style={{ padding: '12px' }}>{product.lastUpdated}</td>
+        <div style={styles.tableContainer}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead style={styles.tableHeader}>
+              <tr>
+                <th style={styles.tableHeaderCell}>Product</th>
+                <th style={styles.tableHeaderCell}>Company</th>
+                <th style={styles.tableHeaderCell}>Status</th>
+                <th style={styles.tableHeaderCell}>Stage</th>
+                <th style={styles.tableHeaderCell}>Last Updated</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredProducts.map(product => (
+                <tr key={product.id} style={styles.tableRow}>
+                  <td style={styles.tableCell}>{product.name}</td>
+                  <td style={styles.tableCell}>{product.company}</td>
+                  <td style={styles.tableCell}>
+                    <span style={product.status === 'Completed' ? styles.statusBadgeCompleted : styles.statusBadgeInProgress}>
+                      {product.status}
+                    </span>
+                  </td>
+                  <td style={styles.tableCell}>
+                    <span style={styles.stageText}>Stage {product.stage}/4</span>
+                  </td>
+                  <td style={styles.tableCell}>{product.lastUpdated}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <p>No products found</p>
+        <p style={styles.noProductsText}>No products found</p>
       )}
     </div>
   );
