@@ -17,10 +17,10 @@
   color: #1A3A3A;
   text-align: center;
   margin-bottom: 35px;
-  font-size: 26px;
+  font-size: 32px; /* Increased from 26px */
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 800; /* Bolder font weight */
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
@@ -39,7 +39,7 @@ label {
   margin-bottom: 10px;
   font-weight: 600;
   color: #1A3A3A;
-  font-size: 16px;
+  font-size: 18px; /* Increased from 16px */
   letter-spacing: 0.5px;
 }
 
@@ -52,7 +52,7 @@ input[type="text"] {
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.85);
   color: #333;
-  font-size: 16px;
+  font-size: 18px; /* Increased from 16px */
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
@@ -74,13 +74,14 @@ input[type="text"]:focus {
 
 .uploading > label {
   margin-bottom: 15px;
+  font-size: 18px; /* Increased font size */
 }
 
 .upload-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to bottom right, #D4FFE8, #A5FFD6);
+  background-color: #D4FFE8; /* Solid color instead of gradient */
   color: #1A3A3A;
   border: none;
   border-radius: 10px;
@@ -89,23 +90,24 @@ input[type="text"]:focus {
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   font-weight: 600;
+  font-size: 17px; /* Increased font size */
 }
 
 .upload-button:hover {
-  background: linear-gradient(to bottom right, #A5FFD6, #8FF0C8);
+  background-color: #A5FFD6; /* Solid color on hover */
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 .upload-button svg {
   margin-right: 8px;
-  height: 20px;
-  width: 20px;
+  height: 22px; /* Slightly larger */
+  width: 22px; /* Slightly larger */
 }
 
 .uploading p {
   margin-top: 12px;
-  font-size: 15px;
+  font-size: 16px; /* Increased from 15px */
   color: #1A3A3A;
   background-color: rgba(255, 255, 255, 0.7);
   padding: 10px 15px;
@@ -129,7 +131,7 @@ input[type="text"]:focus {
   font-weight: 700;
   margin-bottom: 18px;
   color: #1A3A3A;
-  font-size: 18px;
+  font-size: 20px; /* Increased from 18px */
   border-bottom: 2px solid rgba(126, 190, 163, 0.3);
   padding-bottom: 12px;
 }
@@ -152,14 +154,14 @@ input[type="text"]:focus {
 
 .checkbox-container input[type="checkbox"] {
   margin-right: 14px;
-  width: 20px;
-  height: 20px;
+  width: 22px; /* Increased from 20px */
+  height: 22px; /* Increased from 20px */
   accent-color: #2C6E49;
   cursor: pointer;
 }
 
 .checkbox-container label {
-  font-size: 16px;
+  font-size: 18px; /* Increased from 16px */
   margin-bottom: 0;
   cursor: pointer;
   font-weight: 500;
@@ -171,7 +173,7 @@ input[type="text"]:focus {
   display: block;
   width: 70%;
   height: 54px;
-  font-size: 17px;
+  font-size: 18px; /* Increased from 17px */
   border-radius: 12px;
   background: linear-gradient(to right, #92DFC5, #C4FFE0);
   color: #1A3A3A;
@@ -212,9 +214,10 @@ input[type="text"]:focus {
 .transaction-details h3 {
   color: #2C6E49;
   margin-bottom: 18px;
-  font-size: 20px;
+  font-size: 22px; /* Increased from 20px */
   padding-bottom: 12px;
   border-bottom: 2px solid #A5FFD6;
+  font-weight: 700;
 }
 
 .transaction-details p {
@@ -222,7 +225,7 @@ input[type="text"]:focus {
   background-color: #f8f8f8;
   padding: 15px;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 16px; /* Increased from 14px */
   margin-bottom: 18px;
   word-break: break-all;
   border: 1px solid #eee;
@@ -235,6 +238,7 @@ input[type="text"]:focus {
   margin: 15px 0;
   background: linear-gradient(to right, #2C6E49, #3D8361);
   color: #fff;
+  font-size: 18px; /* Increased font size */
 }
 
 .transaction-details button:hover {
@@ -257,13 +261,13 @@ input[type="text"]:focus {
 .debug-info h3 {
   color: #2C6E49;
   margin-bottom: 12px;
-  font-size: 16px;
+  font-size: 18px; /* Increased from 16px */
   font-weight: 700;
 }
 
 .debug-info p {
   margin-bottom: 10px;
-  font-size: 14px;
+  font-size: 16px; /* Increased from 14px */
   background-color: rgba(255, 255, 255, 0.7);
   padding: 8px 12px;
   border-radius: 6px;
@@ -282,5 +286,9 @@ input[type="text"]:focus {
   
   .container button {
     width: 100%;
+  }
+  
+  .container h1 {
+    font-size: 28px; /* Slightly smaller on mobile */
   }
 }
