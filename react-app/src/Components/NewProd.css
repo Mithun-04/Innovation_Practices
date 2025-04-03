@@ -1,132 +1,286 @@
+/* Base styling with brighter green */
 .container {
   align-self: center;
-  background-color: #6A9C89;
+  background-color: #7EBEA3; /* Brighter, more vibrant green */
   backdrop-filter: blur(20px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
-  border: 2px solid rgba(255, 255, 255, .2);
-  width: 1200px;
-  height: 900px;
-  padding: 30px 40px;
-  padding-bottom: 50px;
-  border-radius: 10px;
-  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  width: 800px; /* Reduced width for better visual appeal */
+  max-width: 90%;
+  min-height: 850px;
+  padding: 40px;
+  border-radius: 16px;
+  margin: 40px auto;
 }
+
 .container h1 {
-  color: #000000;
+  color: #1A3A3A;
   text-align: center;
-  margin-bottom: 20px;
-}
-/* Input Box Styling */
-.container .input-box {
-  background-color: white;
-  border-radius: 40px;
-  padding-left: 50px;
-  margin: 30px 0;
-  height: 50px;
-  width: 50%;
-  display: flex;
-  align-items: center; /* Ensure content is vertically centered */
-  border: 2px solid rgba(0, 0, 0, 0.2); 
-}
-
-.input-box input {
-  width: 100%;
-  height: 100%;
-  border: none; /* Remove border from input */
-  background: transparent; /* Make background transparent */
-  border-radius: 40px;
-  outline: none;
-  padding-left: 1rem;
-  padding-right: 3rem;
-  color: #000000;
-  font-size: 17px;
-}
-
-.input-box ::placeholder {
-  color: rgb(0, 0, 0);
-}
-
-/* Icon styling inside input */
-.input-box .icon {
-  position: relative;
-  top: 0; /* Adjust icon position */
-  right: 35px;
-  cursor: pointer;
-  color: #000000;
-}
-
-
-.wrapper h1 {
-  color: #000000;
-  text-align: center; 
-}
-
-
-.container button {
-  display: block; 
-  width: 60%;
-  height: 45px;
-  font-size: 17px;
-  border-radius: 40px;
-  background-color: #C4EDD9;
-  color: #000000;
-  border: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
-  cursor: pointer;
+  margin-bottom: 35px;
+  font-size: 26px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
   font-weight: 700;
-  margin: 0 auto;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
-
-.check-box {
-  margin-bottom: 20px;
+/* Form styling */
+form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  width: 85%; /* Make form narrower than container */
+  margin: 0 auto 30px;
 }
 
-.check-box label {
+/* Label styling */
+label {
   display: block;
-  font-weight: bold;
   margin-bottom: 10px;
+  font-weight: 600;
+  color: #1A3A3A;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+/* Input styling */
+input[type="text"] {
+  width: 100%;
+  height: 52px;
+  padding: 0 20px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.85);
+  color: #333;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+input[type="text"]:focus {
+  border-color: #D4FFE8;
+  outline: none;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Improved upload styling */
+.uploading {
+  margin: 25px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.uploading > label {
+  margin-bottom: 15px;
+}
+
+.upload-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom right, #D4FFE8, #A5FFD6);
+  color: #1A3A3A;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+}
+
+.upload-button:hover {
+  background: linear-gradient(to bottom right, #A5FFD6, #8FF0C8);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.upload-button svg {
+  margin-right: 8px;
+  height: 20px;
+  width: 20px;
+}
+
+.uploading p {
+  margin-top: 12px;
+  font-size: 15px;
+  color: #1A3A3A;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 10px 15px;
+  border-radius: 8px;
+  display: inline-block;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Checkbox styling */
+.check-box {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+  padding: 25px;
+  border-radius: 12px;
+  margin: 25px 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.check-box > label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #1A3A3A;
+  font-size: 18px;
+  border-bottom: 2px solid rgba(126, 190, 163, 0.3);
+  padding-bottom: 12px;
 }
 
 .checkbox-container {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
+  padding: 12px 16px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.checkbox-container:hover {
+  background-color: rgba(212, 255, 232, 0.5);
+  transform: translateX(5px);
 }
 
 .checkbox-container input[type="checkbox"] {
-  margin-right: 10px;
+  margin-right: 14px;
+  width: 20px;
+  height: 20px;
+  accent-color: #2C6E49;
+  cursor: pointer;
 }
 
 .checkbox-container label {
   font-size: 16px;
-}
-
-.uploading label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 15px;
-  border: 2px solid #000;
+  margin-bottom: 0;
   cursor: pointer;
-  font-weight: bold;
-  background-color: #fff;
-  border-radius: 4px;
-  transition: background-color 0.3s;
+  font-weight: 500;
+  color: #2C6E49;
 }
 
-.uploading label:hover {
-  background-color: #f3f3f3;
+/* Button styling */
+.container button {
+  display: block;
+  width: 70%;
+  height: 54px;
+  font-size: 17px;
+  border-radius: 12px;
+  background: linear-gradient(to right, #92DFC5, #C4FFE0);
+  color: #1A3A3A;
+  border: none;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  font-weight: 700;
+  margin: 35px auto;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
 }
 
-.uploading input[type="file"] {
-  display: none;
+.container button:hover {
+  background: linear-gradient(to right, #7ECFB1, #A5FFD6);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.uploading p {
-  margin-top: 10px;
+.container button:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Transaction details section */
+.transaction-details {
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+  padding: 25px;
+  border-radius: 12px;
+  margin-top: 35px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.transaction-details h3 {
+  color: #2C6E49;
+  margin-bottom: 18px;
+  font-size: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #A5FFD6;
+}
+
+.transaction-details p {
+  font-family: monospace;
+  background-color: #f8f8f8;
+  padding: 15px;
+  border-radius: 8px;
   font-size: 14px;
-  color: #333;
+  margin-bottom: 18px;
+  word-break: break-all;
+  border: 1px solid #eee;
 }
 
+.transaction-details button {
+  width: auto;
+  padding: 0 30px;
+  height: 48px;
+  margin: 15px 0;
+  background: linear-gradient(to right, #2C6E49, #3D8361);
+  color: #fff;
+}
 
+.transaction-details button:hover {
+  background: linear-gradient(to right, #3D8361, #4E9673);
+}
+
+/* Debug info styling */
+.debug-info {
+  background-color: rgba(44, 110, 73, 0.1);
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 35px;
+  font-family: monospace;
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid rgba(44, 110, 73, 0.2);
+}
+
+.debug-info h3 {
+  color: #2C6E49;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.debug-info p {
+  margin-bottom: 10px;
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 30px 20px;
+    width: 95%;
+  }
+  
+  form, .transaction-details, .debug-info {
+    width: 100%;
+  }
+  
+  .container button {
+    width: 100%;
+  }
+}

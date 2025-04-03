@@ -212,11 +212,7 @@ function NewProd() {
         </div>
       )}
       
-      <div className="debug-info">
-        <h3>Debug Information</h3>
-        <p>Selected Units: {selectedUnits.join(', ') || "None"}</p>
-        <p>Connected Account: {account || "Not connected"}</p>
-      </div>
+      
     </div>
   );
 }
