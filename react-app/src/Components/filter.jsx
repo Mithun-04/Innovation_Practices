@@ -4,14 +4,19 @@ import ProductRegistryABI from "../../build/contracts/ProductRegistry.json";
 
 const ProductTrackingFilter = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchType, setSearchType] = useState('internalPO'); // Default search by Internal PO
   const [showCompletedOnly, setShowCompletedOnly] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState('');
+  const [selectedUnit, setSelectedUnit] = useState(''); // Unit filtering
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [allProducts, setAllProducts] = useState([]); // ✅ Stores original data
+  const [allProducts, setAllProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
   const [account, setAccount] = useState('');
+
+  // Predefined unit types based on requirements
+  const unitTypes = ["laser Cutting", "milling", "bending", "drilling"];
 
   useEffect(() => {
     const initBlockchain = async () => {
@@ -60,21 +65,26 @@ const ProductTrackingFilter = () => {
       let products = [];
 
       for (let i = 0; i < productKeys.length; i++) {
-        const key = productKeys[i];
-        const productData = await contractInstance.methods.getProductDetails(key).call();
-
+        const internalPO = productKeys[i];
+        const productData = await contractInstance.methods.getProductDetails(internalPO).call();
+        
+        // Get units for this product
+        const units = await contractInstance.methods.getProductUnits(internalPO).call();
+        
         products.push({
-          id: i + 1,
-          name: productData[1],
-          company: productData[2],
-          status: productData[4] ? 'Completed' : 'In Progress',
-          stage: productData[5], // Number of units
+          internalPO: internalPO,
+          externalPO: productData[0], // externalPO is at index 0 as per your contract
+          name: productData[1], // productName is at index 1
+          company: productData[2], // companyName is at index 2
+          fileHash: productData[3],
+          status: productData[4] ? 'Completed' : 'In Progress', // isCompleted is at index 4
+          units: units, // Store all units for filtering
           lastUpdated: new Date().toISOString().split('T')[0]
         });
       }
 
-      setAllProducts(products); // ✅ Store original data
-      setFilteredProducts(products); // ✅ Initial display
+      setAllProducts(products);
+      setFilteredProducts(products);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -83,16 +93,27 @@ const ProductTrackingFilter = () => {
 
   // Apply filters
   useEffect(() => {
-    let results = allProducts; // ✅ Always filter from original data
+    let results = allProducts;
 
     if (searchTerm) {
-      results = results.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      results = results.filter(product => {
+        if (searchType === 'internalPO') {
+          return product.internalPO.toLowerCase().includes(searchTerm.toLowerCase());
+        } else {
+          return product.name.toLowerCase().includes(searchTerm.toLowerCase());
+        }
+      });
     }
 
     if (selectedCompany) {
       results = results.filter(product => product.company === selectedCompany);
+    }
+
+    if (selectedUnit) {
+      // Filter products that include the selected unit
+      results = results.filter(product => 
+        product.units.some(unit => unit.toLowerCase() === selectedUnit.toLowerCase())
+      );
     }
 
     if (showCompletedOnly) {
@@ -100,12 +121,13 @@ const ProductTrackingFilter = () => {
     }
 
     setFilteredProducts(results);
-  }, [searchTerm, selectedCompany, showCompletedOnly, allProducts]); // ✅ Depend on allProducts
+  }, [searchTerm, searchType, selectedCompany, selectedUnit, showCompletedOnly, allProducts]);
 
   // Reset all filters
   const resetFilters = () => {
     setSearchTerm('');
     setSelectedCompany('');
+    setSelectedUnit('');
     setShowCompletedOnly(false);
   };
 
@@ -132,11 +154,18 @@ const ProductTrackingFilter = () => {
     filterContainer: {
       marginBottom: '32px', 
       display: 'flex', 
-      gap: '18px',
-      alignItems: 'center'
+      flexDirection: 'column',
+      gap: '18px'
+    },
+    filterRow: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      gap: '12px'
     },
     searchInput: {
-      flex: 1, 
+      flex: '0 0 30%', // Takes 30% of the space
       padding: '12px 16px', 
       borderRadius: '8px', 
       border: '2px solid #7EBEA3',
@@ -144,6 +173,7 @@ const ProductTrackingFilter = () => {
       fontWeight: '500'
     },
     selectInput: {
+      flex: '0 0 16%', // Each select takes 20% of the space
       padding: '12px 16px', 
       borderRadius: '8px', 
       border: '2px solid #7EBEA3',
@@ -152,21 +182,34 @@ const ProductTrackingFilter = () => {
       fontWeight: '500',
       color: '#2E5947'
     },
+    checkboxContainer: {
+      flex: '0 0 15%', // Checkbox container takes 15% of the space
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
     checkboxLabel: {
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
       fontSize: '16px',
       fontWeight: '500',
-      color: '#2E5947'
+      color: '#2E5947',
+      whiteSpace: 'nowrap'
     },
     checkbox: {
       width: '18px',
       height: '18px',
       accentColor: '#7EBEA3'
     },
+    resetButtonContainer: {
+      flex: '0 0 15%', // Reset button takes 15% of the space
+      display: 'flex',
+      justifyContent: 'flex-end'
+    },
     resetButton: {
       padding: '12px 20px', 
+      
       borderRadius: '8px', 
       border: 'none', 
       backgroundColor: '#7EBEA3', 
@@ -175,7 +218,8 @@ const ProductTrackingFilter = () => {
       fontWeight: '600',
       cursor: 'pointer',
       transition: 'background-color 0.2s',
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+      width: '80%'
     },
     tableContainer: {
       borderRadius: '10px',
@@ -239,6 +283,12 @@ const ProductTrackingFilter = () => {
       color: '#2E5947',
       textAlign: 'center',
       padding: '40px 0'
+    },
+    searchTypeContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '20px',
+      marginTop: '8px'
     }
   };
 
@@ -246,43 +296,92 @@ const ProductTrackingFilter = () => {
     <div style={styles.container}>
       <h2 style={styles.heading}>Product Tracking Dashboard</h2>
 
-      {/* Search and Filter Section */}
+      {/* Search and Filter Section - All elements distributed across full width */}
       <div style={styles.filterContainer}>
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={styles.searchInput}
-        />
-        <select
-          value={selectedCompany}
-          onChange={(e) => setSelectedCompany(e.target.value)}
-          style={styles.selectInput}
-        >
-          <option value="">All Companies</option>
-          {[...new Set(allProducts.map(p => p.company))].map(company => (
-            <option key={company} value={company}>{company}</option>
-          ))}
-        </select>
-        <label style={styles.checkboxLabel}>
+        <div style={styles.filterRow}>
+          {/* Search Input - Wider than other elements */}
           <input
-            type="checkbox"
-            checked={showCompletedOnly}
-            onChange={(e) => setShowCompletedOnly(e.target.checked)}
-            style={styles.checkbox}
+            type="text"
+            placeholder={searchType === 'internalPO' ? "Search by Internal PO..." : "Search by Product Name..."}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={styles.searchInput}
           />
-          Completed Only
-        </label>
-        <button 
-          onClick={resetFilters} 
-          style={styles.resetButton}
-        >
-          Reset
-        </button>
+          
+          {/* Company Filter - Equal width as Unit Filter */}
+          <select
+            value={selectedCompany}
+            onChange={(e) => setSelectedCompany(e.target.value)}
+            style={styles.selectInput}
+          >
+            <option value="">All Companies</option>
+            {[...new Set(allProducts.map(p => p.company))].map(company => (
+              <option key={company} value={company}>{company}</option>
+            ))}
+          </select>
+          
+          {/* Unit Filter - Equal width as Company Filter */}
+          <select
+            value={selectedUnit}
+            onChange={(e) => setSelectedUnit(e.target.value)}
+            style={styles.selectInput}
+          >
+            <option value="">All Units</option>
+            {unitTypes.map(unit => (
+              <option key={unit} value={unit}>{unit}</option>
+            ))}
+          </select>
+          
+          {/* Completed Only Checkbox */}
+          <div style={styles.checkboxContainer}>
+            <label style={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={showCompletedOnly}
+                onChange={(e) => setShowCompletedOnly(e.target.checked)}
+                style={styles.checkbox}
+              />
+              Completed Only
+            </label>
+          </div>
+          
+          {/* Reset Button */}
+          <div style={styles.resetButtonContainer}>
+            <button 
+              onClick={resetFilters} 
+              style={styles.resetButton}
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+
+        {/* Search Type Options */}
+        <div style={styles.searchTypeContainer}>
+          <label style={styles.checkboxLabel}>
+            <input
+              type="radio"
+              name="searchType"
+              checked={searchType === 'internalPO'}
+              onChange={() => setSearchType('internalPO')}
+              style={styles.checkbox}
+            />
+            Search by Internal PO
+          </label>
+          <label style={styles.checkboxLabel}>
+            <input
+              type="radio"
+              name="searchType"
+              checked={searchType === 'productName'}
+              onChange={() => setSearchType('productName')}
+              style={styles.checkbox}
+            />
+            Search by Product Name
+          </label>
+        </div>
       </div>
 
-      {/* Product Table */}
+      {/* Product Table - External PO removed */}
       {isLoading ? (
         <p style={styles.loadingText}>Loading products...</p>
       ) : filteredProducts.length > 0 ? (
@@ -290,25 +389,23 @@ const ProductTrackingFilter = () => {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead style={styles.tableHeader}>
               <tr>
+                <th style={styles.tableHeaderCell}>Internal PO</th>
                 <th style={styles.tableHeaderCell}>Product</th>
                 <th style={styles.tableHeaderCell}>Company</th>
                 <th style={styles.tableHeaderCell}>Status</th>
-                <th style={styles.tableHeaderCell}>Stage</th>
                 <th style={styles.tableHeaderCell}>Last Updated</th>
               </tr>
             </thead>
             <tbody>
               {filteredProducts.map(product => (
-                <tr key={product.id} style={styles.tableRow}>
+                <tr key={product.internalPO} style={styles.tableRow}>
+                  <td style={styles.tableCell}>{product.internalPO}</td>
                   <td style={styles.tableCell}>{product.name}</td>
                   <td style={styles.tableCell}>{product.company}</td>
                   <td style={styles.tableCell}>
                     <span style={product.status === 'Completed' ? styles.statusBadgeCompleted : styles.statusBadgeInProgress}>
                       {product.status}
                     </span>
-                  </td>
-                  <td style={styles.tableCell}>
-                    <span style={styles.stageText}>Stage {product.stage}/4</span>
                   </td>
                   <td style={styles.tableCell}>{product.lastUpdated}</td>
                 </tr>
